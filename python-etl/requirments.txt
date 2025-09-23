@@ -1,0 +1,14 @@
+# Data processing and ETL (User Stories 1 & 2)
+pandas>=2.1.0
+pyspark==3.3.0
+
+# AWS services (for Glue deployment)
+boto3==1.26.137
+
+# Testing (for Python components only)
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Development utilities
+python-dotenv==1.0.0
+pytz==2023.3

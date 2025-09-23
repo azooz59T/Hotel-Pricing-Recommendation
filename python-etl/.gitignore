@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment - DON'T commit this!
+venv/
+myvenv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+
+# Generated data files (optional - you might want to commit sample data)
+*.csv
+data/output/
+
+# Spark
+metastore_db/
+spark-warehouse/
+derby.log
+
+# AWS credentials
+.aws/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
