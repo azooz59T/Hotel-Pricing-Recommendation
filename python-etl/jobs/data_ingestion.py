@@ -8,10 +8,49 @@ from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.dynamicframe import DynamicFrame
 from pyspark.sql.functions import col, current_timestamp
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DecimalType
+
+def get_table_schema(table_name):
+    """Simple schema definitions"""
+    
+    schemas = {
+        'products': StructType([
+            StructField("Id", StringType(), False),
+            StructField("Room Name", StringType(), True),
+            StructField("Arrival Date", StringType(), True),
+            StructField("No. of Beds", IntegerType(), True),
+            StructField("Room Type", StringType(), True),
+            StructField("Grade", IntegerType(), True),
+            StructField("Private Pool", StringType(), True)
+        ]),
+        
+        'bookings': StructType([
+            StructField("Id", StringType(), False),
+            StructField("Product Id", StringType(), True),
+            StructField("Creation Date", StringType(), True),
+            StructField("Confirmation Status", StringType(), True),
+            StructField("Arrival Date", StringType(), True)
+        ]),
+        
+        'buildings': StructType([
+            StructField("Building", StringType(), True),
+            StructField("Product Id", StringType(), True)
+        ]),
+        
+        'prices': StructType([
+            StructField("Product Id", StringType(), True),
+            StructField("Price", DecimalType(10, 2), True),
+            StructField("Currency", StringType(), True)
+        ])
+    }
+    
+    return schemas.get(table_name)
 
 def read_csv_file(glue_context, file_path, table_name):
-    """Read CSV file from S3 using Glue DynamicFrame"""
+    """Read CSV file from S3 using Glue DynamicFrame with simple schema"""
     try:
+        schema = get_table_schema(table_name)
+        
         dynamic_frame = glue_context.create_dynamic_frame.from_options(
             connection_type="s3",
             connection_options={"paths": [file_path]},
@@ -20,6 +59,11 @@ def read_csv_file(glue_context, file_path, table_name):
         )
         
         df = dynamic_frame.toDF()
+        
+        # Apply schema if defined
+        if schema:
+            df = glue_context.spark_session.createDataFrame(df.rdd, schema)
+        
         df = df.withColumn("processed_at", current_timestamp())
         
         return df
