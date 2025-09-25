@@ -110,7 +110,8 @@ def save_dataframe_as_parquet(glue_context, df, output_path, table_name):
     
     try:
         full_path = f"{output_path}/{table_name}"
-        dynamic_frame = DynamicFrame.fromDF(df, glue_context, table_name)
+        # Force single file output using coalesce(1)
+        dynamic_frame = DynamicFrame.fromDF(df.coalesce(1), glue_context, table_name)
         
         glue_context.write_dynamic_frame.from_options(
             frame=dynamic_frame,
