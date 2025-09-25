@@ -88,11 +88,11 @@ def generate_prices_data(product_ids):
 # Generate all datasets
 if __name__ == "__main__":
     # Generate products first
-    products_df = generate_products_data(1000)
+    products_df = generate_products_data(100000)
     product_ids = products_df['Id'].tolist()
     
     # Generate other datasets based on product IDs
-    bookings_df = generate_bookings_data(product_ids, 5000)
+    bookings_df = generate_bookings_data(product_ids, 1000000)
     buildings_df = generate_buildings_data(product_ids)
     prices_df = generate_prices_data(product_ids)
     
