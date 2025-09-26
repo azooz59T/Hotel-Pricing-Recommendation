@@ -24,7 +24,7 @@ public class ProductGroupController {
         try {
             System.out.println("Starting to fetch data from DuckDB...");
 
-            List<Map<String, Object>> data = duckDBService.getProductsWithPricesGroupedByBuilding();
+            List<Map<String, Object>> data = duckDBService.getProductsWithPricesAndMetrics();
             System.out.println("Fetched " + data.size() + " records from DuckDB");
 
             Map<String, List<Map<String, Object>>> groupedByBuilding = data.stream()
@@ -55,17 +55,23 @@ public class ProductGroupController {
         BigDecimal currentPrice = row.get("current_price") != null ?
                 new BigDecimal(row.get("current_price").toString()) : BigDecimal.ZERO;
 
-        BigDecimal recommendedPrice = currentPrice.multiply(BigDecimal.valueOf(1.10));
+        // Get booking rate from cluster analysis
+        Double bookingRate = row.get("booking_rate") != null ?
+                Double.parseDouble(row.get("booking_rate").toString()) : 0.5;
 
-        // Handle beds conversion from String to Integer
-        Integer beds = null;
-        if (row.get("beds") != null) {
-            try {
-                beds = Integer.parseInt(row.get("beds").toString());
-            } catch (NumberFormatException e) {
-                beds = 0;
-            }
+        // Smart pricing based on demand
+        BigDecimal multiplier;
+        if (bookingRate >= 0.8) {
+            multiplier = BigDecimal.valueOf(1.20); // High demand: +20%
+        } else if (bookingRate >= 0.6) {
+            multiplier = BigDecimal.valueOf(1.10); // Good demand: +10%
+        } else if (bookingRate >= 0.4) {
+            multiplier = BigDecimal.valueOf(1.05); // Medium demand: +5%
+        } else {
+            multiplier = BigDecimal.valueOf(0.95); // Low demand: -5%
         }
+
+        BigDecimal recommendedPrice = currentPrice.multiply(multiplier);
 
         return new BuildingGroupResponse.ProductSummary(
                 (String) row.get("product_id"),
