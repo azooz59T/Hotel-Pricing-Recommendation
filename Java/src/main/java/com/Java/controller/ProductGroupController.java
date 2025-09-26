@@ -57,6 +57,16 @@ public class ProductGroupController {
 
         BigDecimal recommendedPrice = currentPrice.multiply(BigDecimal.valueOf(1.10));
 
+        // Handle beds conversion from String to Integer
+        Integer beds = null;
+        if (row.get("beds") != null) {
+            try {
+                beds = Integer.parseInt(row.get("beds").toString());
+            } catch (NumberFormatException e) {
+                beds = 0;
+            }
+        }
+
         return new BuildingGroupResponse.ProductSummary(
                 (String) row.get("product_id"),
                 (String) row.get("room_name"),

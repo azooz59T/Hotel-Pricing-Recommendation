@@ -32,20 +32,20 @@ public class DuckDBService {
 
     public List<Map<String, Object>> getProductsWithPricesGroupedByBuilding() {
         String sql = """
-        SELECT 
-            b.Building as building_name,
-            p.Id as product_id,
-            p.room_name as room_name,
-            p."no._of_beds" as beds,
-            p.room_type as room_type,
-            p.private_pool as private_pool,
-            pr.Price as current_price,
-            pr.Currency as currency
-        FROM read_parquet('s3://%s/products/*.parquet') p
-        JOIN read_parquet('s3://%s/buildings/*.parquet') b ON p.Id = b.product_id
-        LEFT JOIN read_parquet('s3://%s/prices/*.parquet') pr ON p.Id = pr.product_id
-        ORDER BY b.Building, p.room_name
-        """.formatted(bucketName, bucketName, bucketName);
+            SELECT 
+                b.Building as building_name,
+                p.Id as product_id,
+                p.room_name as room_name,
+                p."no._of_beds" as beds,
+                p.room_type as room_type,
+                p.private_pool as private_pool,
+                pr.Price as current_price,
+                pr.Currency as currency
+            FROM read_parquet('s3://%s/products/*.parquet') p
+            JOIN read_parquet('s3://%s/buildings/*.parquet') b ON p.Id = b.product_id
+            LEFT JOIN read_parquet('s3://%s/prices/*.parquet') pr ON p.Id = pr.product_id
+            ORDER BY b.Building, p.room_name
+            """.formatted(bucketName, bucketName, bucketName);
 
         return executeQuery(sql);
     }
