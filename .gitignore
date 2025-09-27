@@ -198,3 +198,27 @@ datasets/
 # Logs
 logs/
 *.log
+
+# Frontend files (inside Java directory)
+Java/frontend/node_modules/
+Java/frontend/npm-debug.log*
+Java/frontend/yarn-debug.log*
+Java/frontend/yarn-error.log*
+
+Java/frontend/build/
+Java/frontend/dist/
+
+Java/frontend/.env
+Java/frontend/.env.local
+Java/frontend/.env.development.local
+Java/frontend/.env.test.local
+Java/frontend/.env.production.local
+
+Java/frontend/.DS_Store
+Java/frontend/Thumbs.db
+
+Java/frontend/package-lock.json
+Java/frontend/yarn.lock
+
+Java/frontend/logs
+Java/frontend/*.log
