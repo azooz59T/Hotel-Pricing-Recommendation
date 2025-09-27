@@ -201,9 +201,10 @@ logs/
 
 # Frontend files (inside Java directory)
 Java/frontend/node_modules/
+Java/frontend/build/
+Java/frontend/.env*
 Java/frontend/npm-debug.log*
-Java/frontend/yarn-debug.log*
-Java/frontend/yarn-error.log*
+Java/frontend/yarn-*.log
 
 Java/frontend/build/
 Java/frontend/dist/
