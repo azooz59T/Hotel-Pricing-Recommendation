@@ -5,10 +5,12 @@ import { useProducts } from '../hooks/useProducts';
 import DashboardHeader from './DashboardHeader';
 import FiltersSidebar from './FiltersSidebar';
 import BuildingCard from './BuildingCard';
+import MultiCurrencyTable from './MultiCurrencyTable';
 import './PricingDashboard.css';
 
 const PricingDashboard = () => {
   const [userRole, setUserRole] = useState('pricing_manager');
+  const [activeTab, setActiveTab] = useState('buildings');
   const { products, availableFilters, loading, error, loadData, applyFilters } = useProducts(userRole);
 
   const getTotalProducts = () => {
@@ -48,27 +50,51 @@ const PricingDashboard = () => {
         onRefresh={loadData} 
       />
 
+      {/* Tab Navigation */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-button ${activeTab === 'buildings' ? 'active' : ''}`}
+          onClick={() => setActiveTab('buildings')}
+        >
+          Products by Building
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'currency' ? 'active' : ''}`}
+          onClick={() => setActiveTab('currency')}
+        >
+          Multi-Currency View
+        </button>
+      </div>
+
       <div className="dashboard-content">
-        <FiltersSidebar 
-          availableFilters={availableFilters} 
-          onApplyFilters={applyFilters} 
-        />
+        {activeTab === 'buildings' ? (
+          <>
+            <FiltersSidebar 
+              availableFilters={availableFilters} 
+              onApplyFilters={applyFilters} 
+            />
 
-        <div className="products-main">
-          <div className="products-header">
-            <h2>Products by Building ({getTotalProducts()} total)</h2>
-            <p>Role: {userRole.replace('_', ' ')}</p>
-          </div>
+            <div className="products-main">
+              <div className="products-header">
+                <h2>Products by Building ({getTotalProducts()} total)</h2>
+                <p>Role: {userRole.replace('_', ' ')}</p>
+              </div>
 
-          <div className="buildings-list">
-            {products.map(building => (
-              <BuildingCard 
-                key={building.buildingName} 
-                building={building} 
-              />
-            ))}
+              <div className="buildings-list">
+                {products.map(building => (
+                  <BuildingCard 
+                    key={building.buildingName} 
+                    building={building} 
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="full-width-content">
+            <MultiCurrencyTable />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
