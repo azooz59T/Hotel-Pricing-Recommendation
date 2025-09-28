@@ -20,6 +20,11 @@ public class FilterConfigurationService {
      * Get available filters for a role
      */
     public List<String> getFiltersForRole(String userRole) {
+        // Handle null/empty roles explicitly
+        if (userRole == null || userRole.trim().isEmpty()) {
+            userRole = "pricing_manager";
+        }
+
         return roleFilters.getOrDefault(userRole, roleFilters.get("pricing_manager"));
     }
 
