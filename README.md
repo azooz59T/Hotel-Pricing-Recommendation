@@ -131,3 +131,17 @@ After successful run, check your output bucket:
 - `s3://hotel-etl-output-[your-name]/prices/`
 
 Each folder will contain Parquet files with your transformed data.
+
+# Setup Pricing engine
+
+**Create an ETL job**
+
+- use exact same configuration as you have used for the previous ETL job except this time change the script to `product_cluster.py` and the 
+Job parameters to  Key  `--input_path` Value `s3://hotel-etl-output-[your-name]` and Key `--output_path` and `s3://hotel-etl-output-[your-name]/clustering`
+
+**Once the job has completed succesfully**
+
+- run `mvnw spring-boot:run` from the `Hotel Pricing Recommendation\Java` Directory
+- run `npm start` from the `Hotel Pricing Recommendation\Java\frontend` Directory
+
+
