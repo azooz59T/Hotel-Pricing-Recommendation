@@ -362,3 +362,157 @@
     align-items: flex-start;
   }
 }
+/* MultiCurrency */
+
+.multi-currency-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  margin: 24px 0;
+}
+
+.multi-currency-header {
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.multi-currency-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.multi-currency-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+  padding: 24px;
+}
+
+.multi-currency-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.multi-currency-table th {
+  background: #f9fafb;
+  padding: 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sortable-header:hover {
+  background: #f3f4f6;
+}
+
+.multi-currency-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+  text-align: left;
+}
+
+.multi-currency-table tr:hover {
+  background: #f9fafb;
+}
+
+.multi-currency-table tr{
+  text-align: left;
+}
+
+.price-cell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.price-value {
+  color: #059669;
+  font-weight: 600;
+}
+
+.no-price {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.pagination-button {
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.pagination-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.tab-navigation {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 16px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #6b7280;
+  border-right: 1px solid #e5e7eb;
+}
+
+.tab-button:last-child {
+  border-right: none;
+}
+
+.tab-button:hover {
+  background: #f9fafb;
+}
+
+.tab-button.active {
+  background: #2563eb;
+  color: white;
+}
+
+.full-width-content {
+  grid-column: 1 / -1;
+}
