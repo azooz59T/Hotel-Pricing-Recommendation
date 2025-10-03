@@ -64,20 +64,23 @@ public class DuckDBService {
         """.formatted(bucketName, bucketName, bucketName, bucketName);
 
         List<String> conditions = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         
-        // Build WHERE conditions
-        addInCondition(conditions, "b.Building", filters.getBuildings());
-        addInCondition(conditions, "p.room_type", filters.getRoomTypes());
-        addInCondition(conditions, "p.\"no._of_beds\"", filters.getBeds());
-        addInCondition(conditions, "p.Grade", filters.getGrades());
-        addInCondition(conditions, "p.private_pool", filters.getPrivatePool());
+        // Build WHERE conditions with parameterised queries
+        addInConditionParameterised(conditions, parameters, "b.Building", filters.getBuildings());
+        addInConditionParameterised(conditions, parameters, "p.room_type", filters.getRoomTypes());
+        addInConditionParameterised(conditions, parameters, "p.\"no._of_beds\"", filters.getBeds());
+        addInConditionParameterised(conditions, parameters, "p.Grade", filters.getGrades());
+        addInConditionParameterised(conditions, parameters, "p.private_pool", filters.getPrivatePool());
         
-        // Date range filters
+        // Date range filters and parameterised 
         if (filters.getArrivalDateFrom() != null) {
-            conditions.add("p.arrival_date >= '" + filters.getArrivalDateFrom() + "'");
+            conditions.add("p.arrival_date >= ?");
+            parameters.add(filters.getArrivalDateFrom());
         }
         if (filters.getArrivalDateTo() != null) {
-            conditions.add("p.arrival_date <= '" + filters.getArrivalDateTo() + "'");
+            conditions.add("p.arrival_date <= ?");
+            parameters.add(filters.getArrivalDateTo());
         }
         
         // Build final SQL
@@ -87,7 +90,8 @@ public class DuckDBService {
         }
         finalSql += " ORDER BY b.Building, p.room_name";
         
-        return jdbcTemplate.queryForList(finalSql);
+        // Execute with parameters - THIS IS THE KEY! ✅
+        return jdbcTemplate.queryForList(finalSql, parameters.toArray());
     }
 
     /**
@@ -100,12 +104,16 @@ public class DuckDBService {
     /**
      * Helper method to build IN clauses safely
      */
-    private void addInCondition(List<String> conditions, String column, List<?> values) {
+    private void addInConditionParameterised(List<String> conditions, List<Object> parameters, 
+                                            String column, List<?> values) {
         if (isNotEmpty(values)) {
-            String inClause = values.stream()
-                .map(this::formatValue)
-                .collect(Collectors.joining(",", column + " IN (", ")"));
-            conditions.add(inClause);
+            // Create placeholders: ?, ?, ?
+            String placeholders = values.stream()
+                .map(v -> "?")
+                .collect(Collectors.joining(","));
+            
+            conditions.add(column + " IN (" + placeholders + ")");
+            parameters.addAll(values);  // Add actual values as parameters
         }
     }
 
