@@ -134,6 +134,8 @@ Each folder will contain Parquet files with your transformed data.
 
 # Setup Pricing engine
 
+**Place the `product_cluster.py` script in the hotel-etl-scripts-[your-name] s3 bucket**
+
 **Create an ETL job**
 
 - use exact same configuration as you have used for the previous ETL job except this time change the script to `product_cluster.py` and the 
